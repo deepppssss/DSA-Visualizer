@@ -36,7 +36,8 @@ An interactive web-based application for visualizing fundamental Data Structures
 
 ## Deployment
 
-Deployed using Vercel.
+Deployed using Vercel
+Live Demo: https://quickdsavisualizer.vercel.app
 
 ## Future Enhancements
 
