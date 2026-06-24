@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>DSA Visualizer</h1>
+        <nav>
+            <button class="nav-btn active" data-target="graph-section">Graph Algorithms</button>
+            <button class="nav-btn" data-target="sorting-section">Sorting Algorithms</button>
+            <button class="nav-btn" data-target="searching-section">Searching Algorithms</button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="metrics-panel">
+            <div class="metric"><span>Time Complexity:</span> <span id="time-complexity">-</span></div>
+            <div class="metric"><span>Space Complexity:</span> <span id="space-complexity">-</span></div>
+            <div class="metric"><span>Execution Steps:</span> <span id="exec-steps">0</span></div>
+            <div class="metric"><span>Nodes Visited:</span> <span id="nodes-visited">0</span></div>
+            <div class="metric"><span>Path Length:</span> <span id="path-length">0</span></div>
+        </div>
+
+        <section id="graph-section" class="active-section">
+            <div class="controls">
+                <select id="graph-algo">
+                    <option value="bfs">BFS</option>
+                    <option value="dfs">DFS</option>
+                    <option value="dijkstra">Dijkstra</option>
+                </select>
+                <select id="graph-type-directed">
+                    <option value="undirected">Undirected</option>
+                    <option value="directed">Directed</option>
+                </select>
+                <select id="graph-type-weight">
+                    <option value="weighted">Weighted</option>
+                    <option value="unweighted">Unweighted</option>
+                </select>
+                <button id="btn-add-node" class="mode-btn active-mode">Add Node</button>
+                <button id="btn-add-edge" class="mode-btn">Add Edge</button>
+                <button id="btn-set-start" class="mode-btn">Set Start Node</button>
+                <button id="btn-set-end" class="mode-btn">Set End Node</button>
+                <button id="btn-run-graph" class="run-btn">Run</button>
+                <button id="btn-clear-graph">Clear Graph</button>
+                <label>Speed: <input type="range" id="graph-speed" min="10" max="1000" value="500"></label>
+            </div>
+            <div class="visualizer-container" id="graph-container">
+                <svg id="graph-edges">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="32" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#495057" />
+                        </marker>
+                        <marker id="arrowhead-active" markerWidth="10" markerHeight="7" refX="32" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#ffc107" />
+                        </marker>
+                        <marker id="arrowhead-path" markerWidth="10" markerHeight="7" refX="32" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#28a745" />
+                        </marker>
+                    </defs>
+                </svg>
+                <div id="graph-nodes"></div>
+            </div>
+        </section>
+
+        <section id="sorting-section">
+            <div class="controls">
+                <select id="sort-algo">
+                    <option value="bubble">Bubble Sort</option>
+                    <option value="selection">Selection Sort</option>
+                    <option value="insertion">Insertion Sort</option>
+                    <option value="merge">Merge Sort</option>
+                    <option value="quick">Quick Sort</option>
+                </select>
+                <input type="text" id="sort-array-input" placeholder="e.g. 5,2,8,1,9">
+                <button id="btn-set-sort-array">Set Array</button>
+                <button id="btn-random-sort-array">Randomize</button>
+                <button id="btn-run-sort" class="run-btn">Run</button>
+                <label>Speed: <input type="range" id="sort-speed" min="10" max="1000" value="100"></label>
+            </div>
+            <div class="visualizer-container" id="sort-container">
+                <!-- Sorting bars will be injected here -->
+            </div>
+        </section>
+
+        <section id="searching-section">
+            <div class="controls">
+                <select id="search-algo">
+                    <option value="binary">Binary Search</option>
+                </select>
+                <input type="text" id="search-array-input" placeholder="Sorted array e.g. 1,3,5,7,9">
+                <input type="number" id="search-target-input" placeholder="Target e.g. 5">
+                <button id="btn-set-search-array">Set Array & Target</button>
+                <button id="btn-random-search-array">Randomize</button>
+                <button id="btn-run-search" class="run-btn">Run</button>
+                <label>Speed: <input type="range" id="search-speed" min="10" max="1000" value="500"></label>
+            </div>
+            <div class="visualizer-container" id="search-container">
+                <!-- Searching blocks will be injected here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Edge Weight -->
+    <div id="edge-weight-modal" class="modal">
+        <div class="modal-content">
+            <h3>Enter Edge Weight</h3>
+            <input type="number" id="edge-weight-input" value="1">
+            <button id="btn-confirm-weight">Confirm</button>
+            <button id="btn-cancel-weight">Cancel</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/graph.js"></script>
+    <script src="js/sorting.js"></script>
+    <script src="js/search.js"></script>
+</body>
+
+</html>
