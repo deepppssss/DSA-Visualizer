@@ -37,7 +37,7 @@ An interactive web-based application for visualizing fundamental Data Structures
 ## Deployment
 
 Deployed using Vercel
-Live Demo: https://quickdsavisualizer.vercel.app
+Live Demo: https://algotracer.vercel.app/
 
 ## Future Enhancements
 
