@@ -19,6 +19,10 @@ An interactive web-based application for visualizing fundamental Data Structures
 * Breadth First Search (BFS)
 * Depth First Search (DFS)
 * Dijkstra's Algorithm
+* Bellman-Ford Algorithm
+* Floyd-Warshall Algorithm
+* Topological Sort
+* Cycle Detection
 
 ## Functionality
 
@@ -41,6 +45,4 @@ Live Demo: https://algotracer.vercel.app/
 
 ## Future Enhancements
 
-* Additional graph algorithms
-* Pathfinding visualizations
 * Dynamic Programming Visualizations
