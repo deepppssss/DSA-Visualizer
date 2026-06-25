@@ -1,4 +1,3 @@
-/* Light theme with dark slate/charcoal interactive elements */
 :root {
     --bg-color: #f8f9fa;
     --text-color: #343a40;
@@ -98,7 +97,8 @@ main {
 section {
     display: none;
     flex: 1;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 1rem;
 }
 
 section.active-section {
@@ -107,10 +107,14 @@ section.active-section {
 
 .controls {
     display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 250px;
+    align-items: stretch;
+    background-color: var(--container-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 button, select, input[type="text"], input[type="number"] {
@@ -313,4 +317,216 @@ button.active-mode {
     width: 100%;
     text-align: center;
     font-size: 1.2rem;
+}
+
+.modal-content button {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#btn-confirm-weight {
+    background-color: var(--node-path);
+    color: white;
+}
+#btn-confirm-weight:hover {
+    background-color: #218838;
+}
+
+#btn-cancel-weight {
+    background-color: var(--node-border);
+    color: white;
+}
+#btn-cancel-weight:hover {
+    background-color: #343a40;
+}
+
+/* Backdrop */
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+}
+
+.backdrop.hidden {
+    display: none;
+}
+
+/* Developer Profile About Container */
+.about-container {
+    position: relative;
+}
+
+.about-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.about-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.profile-icon {
+    width: 24px;
+    height: 24px;
+    stroke: var(--accent-dark);
+}
+
+.about-dropdown {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background-color: var(--container-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 280px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.about-dropdown.hidden {
+    display: none;
+}
+
+.about-dropdown h4 {
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-dark);
+}
+
+.dev-name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.2rem;
+}
+
+.dev-edu {
+    font-size: 0.9rem;
+    color: var(--node-visited);
+    margin-bottom: 1rem;
+}
+
+.contact-simple p {
+    font-size: 0.9rem;
+    color: var(--accent-dark);
+    margin-bottom: 1rem;
+}
+
+.contact-simple a {
+    color: var(--node-visited);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact-simple a:hover {
+    text-decoration: underline;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s;
+}
+
+.social-links a:hover .social-icon {
+    transform: scale(1.15) translateY(-2px);
+}
+
+#graph-results {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--accent-dark);
+    color: #f8f9fa;
+    border-top: 3px solid var(--node-active);
+    padding: 0.6rem 1rem;
+    z-index: 10;
+    max-height: max-content;
+    overflow: hidden;
+    font-size: 0.85rem;
+    text-align: left;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+}
+
+#graph-results.hidden {
+    display: none;
+}
+
+#graph-results h4 {
+    color: var(--node-active);
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+}
+
+/* Floyd-Warshall Matrix */
+.distance-matrix {
+    border-collapse: collapse;
+    width: auto;
+    margin-top: 0.2rem;
+    color: #ffffff;
+    font-size: 0.85rem;
+}
+.distance-matrix th, .distance-matrix td {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.2rem 0.5rem;
+    text-align: center;
+    min-width: 30px;
+}
+.distance-matrix th {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--node-visited);
+}
+.distance-matrix td {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.algo-info {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--bar-color);
+    font-style: italic;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.disabled-option {
+    color: transparent;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    background-color: #e9ecef;
 }

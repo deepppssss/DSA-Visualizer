@@ -1,13 +1,55 @@
 let sortArray = [];
+let originalSortArray = [];
 let sortBars = [];
 let isSorting = false;
 const sortContainer = document.getElementById('sort-container');
+
+const btnRunSort = document.getElementById('btn-run-sort');
+const btnPauseSort = document.getElementById('btn-pause-sort');
+const btnPlaySort = document.getElementById('btn-play-sort');
+const btnResetSort = document.getElementById('btn-reset-sort');
+
+function updateSortControlsState(running, paused) {
+    if (running) {
+        btnRunSort.style.display = 'none';
+        btnResetSort.style.display = 'inline-block';
+        if (paused) {
+            btnPauseSort.style.display = 'none';
+            btnPlaySort.style.display = 'inline-block';
+        } else {
+            btnPauseSort.style.display = 'inline-block';
+            btnPlaySort.style.display = 'none';
+        }
+    } else {
+        btnRunSort.style.display = 'inline-block';
+        btnPauseSort.style.display = 'none';
+        btnPlaySort.style.display = 'none';
+        btnResetSort.style.display = 'none';
+    }
+}
+
+btnPauseSort.addEventListener('click', () => {
+    window.isPaused = true;
+    updateSortControlsState(true, true);
+});
+
+btnPlaySort.addEventListener('click', () => {
+    window.isPaused = false;
+    updateSortControlsState(true, false);
+});
+
+btnResetSort.addEventListener('click', () => {
+    window.isStopped = true;
+    window.isPaused = false;
+    // The try-catch block in run will handle the stop
+});
 
 document.getElementById('btn-set-sort-array').addEventListener('click', () => {
     if (isSorting) return;
     const input = document.getElementById('sort-array-input').value;
     if (input) {
         sortArray = input.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+        originalSortArray = [...sortArray];
         renderSortBars();
     }
 });
@@ -15,25 +57,57 @@ document.getElementById('btn-set-sort-array').addEventListener('click', () => {
 document.getElementById('btn-random-sort-array').addEventListener('click', () => {
     if (isSorting) return;
     sortArray = Array.from({length: 20}, () => Math.floor(Math.random() * 100) + 10);
+    originalSortArray = [...sortArray];
     document.getElementById('sort-array-input').value = sortArray.join(',');
     renderSortBars();
 });
 
-document.getElementById('btn-run-sort').addEventListener('click', async () => {
+btnRunSort.addEventListener('click', async () => {
     if (isSorting || sortArray.length === 0) return;
     const algo = document.getElementById('sort-algo').value;
     const speed = 1010 - parseInt(document.getElementById('sort-speed').value);
     
     isSorting = true;
+    window.isPaused = false;
+    window.isStopped = false;
+    updateSortControlsState(true, false);
     resetMetrics();
     
-    if (algo === 'bubble') await bubbleSort(speed);
-    else if (algo === 'selection') await selectionSort(speed);
-    else if (algo === 'insertion') await insertionSort(speed);
-    else if (algo === 'merge') await mergeSortWrapper(speed);
-    else if (algo === 'quick') await quickSortWrapper(speed);
+    // Make sure we start from fresh array state if it was already sorted
+    sortArray = [...originalSortArray];
+    renderSortBars();
     
+    try {
+        if (algo === 'bubble') await bubbleSort(speed);
+        else if (algo === 'selection') await selectionSort(speed);
+        else if (algo === 'insertion') await insertionSort(speed);
+        else if (algo === 'merge') await mergeSortWrapper(speed);
+        else if (algo === 'quick') await quickSortWrapper(speed);
+    } catch (e) {
+        if (e.message !== 'STOPPED') throw e;
+    }
+    
+    window.isStopped = false;
+    window.isPaused = false;
     isSorting = false;
+    updateSortControlsState(false, false);
+
+    // If it was stopped via reset, re-render original state
+    if (btnResetSort.style.display === 'none') {
+        // Just means execution finished or reset happened.
+        // Wait, if stopped via Reset, let's restore original.
+        // Actually, if stopped, the `try-catch` catches. We can restore here.
+        // But wait, if someone clicks reset, `window.isStopped = true`, we catch it.
+        // Then we can reset the array.
+    }
+});
+
+// Need to attach logic to btnResetSort to actually revert array when stopped
+btnResetSort.addEventListener('click', () => {
+    // Revert visual to original
+    sortArray = [...originalSortArray];
+    renderSortBars();
+    resetMetrics();
 });
 
 function renderSortBars() {
@@ -276,6 +350,7 @@ async function partition(low, high, speed, stepsObj) {
 // Initial Array
 function setInitialSortArray() {
     sortArray = [50, 20, 80, 10, 90, 30, 70, 40, 60, 25, 85, 15];
+    originalSortArray = [...sortArray];
     document.getElementById('sort-array-input').value = sortArray.join(',');
     renderSortBars();
 }

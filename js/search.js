@@ -4,6 +4,45 @@ let searchBlocks = [];
 let isSearching = false;
 const searchContainer = document.getElementById('search-container');
 
+const btnRunSearch = document.getElementById('btn-run-search');
+const btnPauseSearch = document.getElementById('btn-pause-search');
+const btnPlaySearch = document.getElementById('btn-play-search');
+const btnResetSearch = document.getElementById('btn-reset-search');
+
+function updateSearchControlsState(running, paused) {
+    if (running) {
+        btnRunSearch.style.display = 'none';
+        btnResetSearch.style.display = 'inline-block';
+        if (paused) {
+            btnPauseSearch.style.display = 'none';
+            btnPlaySearch.style.display = 'inline-block';
+        } else {
+            btnPauseSearch.style.display = 'inline-block';
+            btnPlaySearch.style.display = 'none';
+        }
+    } else {
+        btnRunSearch.style.display = 'inline-block';
+        btnPauseSearch.style.display = 'none';
+        btnPlaySearch.style.display = 'none';
+        btnResetSearch.style.display = 'none';
+    }
+}
+
+btnPauseSearch.addEventListener('click', () => {
+    window.isPaused = true;
+    updateSearchControlsState(true, true);
+});
+
+btnPlaySearch.addEventListener('click', () => {
+    window.isPaused = false;
+    updateSearchControlsState(true, false);
+});
+
+btnResetSearch.addEventListener('click', () => {
+    window.isStopped = true;
+    window.isPaused = false;
+});
+
 document.getElementById('btn-set-search-array').addEventListener('click', () => {
     if (isSearching) return;
     const arrayInput = document.getElementById('search-array-input').value;
@@ -31,17 +70,32 @@ document.getElementById('btn-random-search-array').addEventListener('click', () 
     renderSearchBlocks();
 });
 
-document.getElementById('btn-run-search').addEventListener('click', async () => {
+btnRunSearch.addEventListener('click', async () => {
     if (isSearching || searchArray.length === 0 || searchTarget === null) return;
     const speed = 1010 - parseInt(document.getElementById('search-speed').value);
     
     isSearching = true;
+    window.isPaused = false;
+    window.isStopped = false;
+    updateSearchControlsState(true, false);
     resetMetrics();
     resetSearchVisuals();
     
-    await binarySearch(speed);
+    try {
+        await binarySearch(speed);
+    } catch (e) {
+        if (e.message !== 'STOPPED') throw e;
+    }
     
+    window.isStopped = false;
+    window.isPaused = false;
     isSearching = false;
+    updateSearchControlsState(false, false);
+});
+
+btnResetSearch.addEventListener('click', () => {
+    resetSearchVisuals();
+    resetMetrics();
 });
 
 function renderSearchBlocks() {
